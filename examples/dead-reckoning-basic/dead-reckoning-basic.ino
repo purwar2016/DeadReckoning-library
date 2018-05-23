@@ -15,8 +15,6 @@
 #define POSITION_COMPUTE_INTERVAL 50 // milliseconds
 #define SEND_INTERVAL 100 // milliseconds
 
-#define RAD_TO_DEG 180/PI
-
 
 // Number of left and right tick counts on the encoder.
 volatile unsigned int leftTicks, rightTicks;
