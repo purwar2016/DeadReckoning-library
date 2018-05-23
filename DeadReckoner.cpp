@@ -10,7 +10,7 @@
 
 #define UNSIGNED_LONG_MAX 4294967295
 
-DeadReckoner::DeadReckoner(int& left, int& right, double tpr, double r, double l) {
+DeadReckoner::DeadReckoner(volatile int *left, volatile int *right, double tpr, double r, double l) {
 	leftTicks = left;
 	rightTicks = right;
 	ticksPerRev = tpr;
@@ -40,17 +40,19 @@ void DeadReckoner::computeAngularVelocities() {
 		// micros() has overflowed and reset to 0
 		dt_omega = UNSIGNED_LONG_MAX - prevWheelComputeTime + micros();
 	}
+
 	float c = 2 * PI / (ticksPerRev * dt_omega / 1000000.0); // ticks to rad/s conversion factor
-	wl = (leftTicks - leftTicksPrev) * c;
-	wr = (rightTicks - rightTicksPrev) * c;
+	wl = (*leftTicks - leftTicksPrev) * c;
+	wr = (*rightTicks - rightTicksPrev) * c;
 	
-	leftTicksPrev = leftTicks;
-	rightTicksPrev = rightTicks;
+	leftTicksPrev = *leftTicks;
+	rightTicksPrev = *rightTicks;
 
 	prevWheelComputeTime = micros();
 }
 
 void DeadReckoner::integratePosition() {
+	computeAngularVelocities();
 	unsigned long dt_integration = micros() - prevIntegrationTime;
 	if (dt_integration < 0) {
 		// micros() has overflowed and has reset to 0
