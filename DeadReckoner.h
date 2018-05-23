@@ -1,8 +1,8 @@
 /*
- Name:		DeadReckoner.h
- Created:	5/18/2018 4:58:56 PM
- Author:	while
- Editor:	http://www.visualmicro.com
+Name:		DeadReckoner.h
+Created:	5/18/2018 4:58:56 PM
+Author:	while
+Editor:	http://www.visualmicro.com
 */
 
 #ifndef _DeadReckoner_h
@@ -12,7 +12,7 @@
 class DeadReckoner {
 
 public:
-	DeadReckoner(int& left, int& right, double tpr, double r, double l);
+	DeadReckoner(volatile int *, volatile int *, double, double, double);
 	void integratePosition();
 	void computeAngularVelocities();
 	double getX();
@@ -21,7 +21,7 @@ public:
 	double getWr();
 
 private:
-	int& leftTicks, rightTicks; // Number of total wheel encoder tick counts for left and right wheels.
+	volatile int *leftTicks, *rightTicks; // Number of total wheel encoder tick counts for left and right wheels.
 	int leftTicksPrev, rightTicksPrev; // Number of total wheel encoder tick counts at time computeAngularVelocities() is called.
 	double xc, yc; // Latest position coordinates in ticks.
 	double wl, wr; // Latest left and right angular velocity of the wheels in radians per second.
