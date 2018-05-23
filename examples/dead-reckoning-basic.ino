@@ -19,7 +19,7 @@
 
 
 // Number of left and right tick counts on the encoder.
-volatile int leftTicks, rightTicks;
+volatile unsigned int leftTicks, rightTicks;
 
 // Previous times for computing elapsed time.
 unsigned long prevPositionComputeTime = 0, prevSendTime = 0;
