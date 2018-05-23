@@ -7,7 +7,7 @@
 class DeadReckoner {
 
 public:
-	DeadReckoner(volatile int *, volatile int *, double, double, double);
+	DeadReckoner(volatile unsigned int *, volatile unsigned int *, double, double, double);
 	void computePosition();
 	double getX();
 	double getY();
@@ -17,7 +17,7 @@ public:
 
 private:
 	void computeAngularVelocities();
-	volatile int *leftTicks, *rightTicks; // Number of total wheel encoder tick counts for left and right wheels.
+	volatile unsigned int *leftTicks, *rightTicks; // Number of total wheel encoder tick counts for left and right wheels.
 	int leftTicksPrev, rightTicksPrev; // Number of total wheel encoder tick counts at time computeAngularVelocities() is called.
 	double xc, yc; // Latest position coordinates in ticks.
 	double wl, wr; // Latest left and right angular velocity of the wheels in radians per second.
