@@ -4,7 +4,7 @@
 
 #define UNSIGNED_LONG_MAX 4294967295
 
-DeadReckoner::DeadReckoner(volatile int *left, volatile int *right, double tpr, double r, double l) {
+DeadReckoner::DeadReckoner(volatile unsigned int *left, volatile unsigned int *right, double tpr, double r, double l) {
 	leftTicks = left;
 	rightTicks = right;
 	ticksPerRev = tpr;
