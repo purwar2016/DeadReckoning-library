@@ -9,6 +9,9 @@ class DeadReckoner {
 public:
 	DeadReckoner(volatile unsigned int *, volatile unsigned int *, double, double, double);
 	void computePosition();
+	void setX(double);
+	void setY(double);
+	void setTheta(double);
 	double getX();
 	double getY();
 	double getWl();
