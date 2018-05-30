@@ -12,6 +12,18 @@ DeadReckoner::DeadReckoner(volatile unsigned int *left, volatile unsigned int *r
 	length = l;
 }
 
+void DeadReckoner::setX(double x) {
+	xc = x;
+}
+
+void DeadReckoner::setY(double y) {
+	yc = y;
+}
+
+void DeadReckoner::setTheta(double t) {
+	theta = t;
+}
+
 double DeadReckoner::getX() {
 	return xc;
 }
