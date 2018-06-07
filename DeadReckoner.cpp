@@ -4,7 +4,7 @@
 
 #define UNSIGNED_LONG_MAX 4294967295
 
-DeadReckoner::DeadReckoner(volatile unsigned int *left, volatile unsigned int *right, double tpr, double r, double l) {
+DeadReckoner::DeadReckoner(volatile unsigned long *left, volatile unsigned long *right, double tpr, double r, double l) {
 	leftTicks = left;
 	rightTicks = right;
 	ticksPerRev = tpr;
@@ -46,11 +46,7 @@ double DeadReckoner::getTheta() {
 
 void DeadReckoner::computeAngularVelocities() {
 	// Time elapsed after computing the angular velocity previously.
-	unsigned long dt_omega = micros() - prevWheelComputeTime; // in microseconds
-	if (dt_omega < 0) {
-		// micros() has overflowed and reset to 0
-		dt_omega = UNSIGNED_LONG_MAX - prevWheelComputeTime + micros();
-	}
+	unsigned long dt_omega = getElapsedTime(prevWheelComputeTime, false); // in microseconds
 
 	float c = 2 * PI / (ticksPerRev * dt_omega / 1000000.0); // ticks to rad/s conversion factor
 	wl = (*leftTicks - leftTicksPrev) * c;
@@ -62,14 +58,20 @@ void DeadReckoner::computeAngularVelocities() {
 	prevWheelComputeTime = micros();
 }
 
+void DeadReckoner::getElapsedTime(unsigned long prevTime, bool isMillis) {
+	unsigned long currentTime = isMillis ? millis() : micros();
+	
+	// Overflow has occured.
+	if (currentTime < prevTime)	return UNSIGNED_LONG_MAX - prevTime + currentTime;
+
+	// No overflow
+	return currentTime - prevTime;
+}
+
 void DeadReckoner::computePosition() {
 	computeAngularVelocities();
 	// Time elapsed after the previous position has been integrated.
-	unsigned long dt_integration = micros() - prevIntegrationTime;
-	if (dt_integration < 0) {
-		// micros() has overflowed and has reset to 0
-		dt_integration = UNSIGNED_LONG_MAX - prevIntegrationTime + micros();
-	}
+	unsigned long dt_integration = getElapsedTime(prevIntegrationTime, false);
 
 	float dt = dt_integration / 1000000.0; // convert to seconds
 
