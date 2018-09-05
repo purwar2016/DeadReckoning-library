@@ -46,32 +46,39 @@ double DeadReckoner::getTheta() {
 
 void DeadReckoner::computeAngularVelocities() {
 	// Time elapsed after computing the angular velocity previously.
-	unsigned long dt_omega = getElapsedTime(prevWheelComputeTime, false); // in microseconds
+	unsigned long dt_omega = getChange(prevWheelComputeTime, micros()); // in microseconds
 
-	float c = 2 * PI / (ticksPerRev * dt_omega / 1000000.0); // ticks to rad/s conversion factor
-	wl = (*leftTicks - leftTicksPrev) * c;
-	wr = (*rightTicks - rightTicksPrev) * c;
-	
+	double c = 2 * PI / (ticksPerRev * dt_omega / 1000000.0); // ticks to rad/s conversion factor
+
+	double changeLeftTicks = getChange(*leftTicks, leftTicksPrev);
+	double changeRightTicks = getChange(*rightTicks, rightTicksPrev);
+
+	wl = changeLeftTicks * c;
+	wr = changeRightTicks * c;
+
 	leftTicksPrev = *leftTicks;
 	rightTicksPrev = *rightTicks;
 
 	prevWheelComputeTime = micros();
 }
 
-void DeadReckoner::getElapsedTime(unsigned long prevTime, bool isMillis) {
-	unsigned long currentTime = isMillis ? millis() : micros();
-	
-	// Overflow has occured.
-	if (currentTime < prevTime)	return UNSIGNED_LONG_MAX - prevTime + currentTime;
+unsigned long DeadReckoner::getChange(unsigned long current, unsigned long previous) {
+	// Overflow has occured
+	if (current < previous) {
+		return UNSIGNED_LONG_MAX - previous + current;
+		// Debug info
+		// Serial.print("OVERFLOW: "); Serial.print("\tcurrent: "); Serial.print(current);
+		// Serial.print("\tprevious: "); Serial.println(previous);
+	}
 
 	// No overflow
-	return currentTime - prevTime;
+	return current - previous;
 }
 
 void DeadReckoner::computePosition() {
 	computeAngularVelocities();
 	// Time elapsed after the previous position has been integrated.
-	unsigned long dt_integration = getElapsedTime(prevIntegrationTime, false);
+	unsigned long dt_integration = getChange(prevIntegrationTime, micros());
 
 	float dt = dt_integration / 1000000.0; // convert to seconds
 
