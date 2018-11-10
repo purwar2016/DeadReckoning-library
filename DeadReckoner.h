@@ -26,6 +26,7 @@ public:
 	double getWl();
 	double getWr();
 	double getTheta();
+	void reset();
 
 private:
 	void computeAngularVelocities();
