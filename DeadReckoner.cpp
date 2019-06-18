@@ -135,10 +135,3 @@ void DeadReckoner::computePosition() {
 
 	prevIntegrationTime = micros();
 }
-
-void DeadReckoner::reset() {
-	xc = 0;
-	yc = 0;
-	leftTicksPrev = *leftTicks;
-	rightTicksPrev = *rightTicks;
-}
