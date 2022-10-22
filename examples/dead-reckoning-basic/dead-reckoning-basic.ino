@@ -1,19 +1,20 @@
 #include <DeadReckoner.h>
 
 // ENCODER PINS
-#define ENCODER_LEFT_PIN 2
-#define ENCODER_RIGHT_PIN 3
+#define ENCODER_LEFT_PIN 15
+#define ENCODER_RIGHT_PIN 4
+
 
 // MEASUREMENTS
 // The units for all measurements must be consistent. 
 // You can use any length unit as desired.
-#define RADIUS 16 // wheel radius in mm
-#define LENGTH 150 // wheel base length in mm
-#define TICKS_PER_REV 900
+#define RADIUS 32.5 // wheel radius in mm
+#define LENGTH 55. // wheel base length in mm
+#define TICKS_PER_REV 40
 
 // TIME INTERVALS
-#define POSITION_COMPUTE_INTERVAL 50 // milliseconds
-#define SEND_INTERVAL 100 // milliseconds
+#define POSITION_COMPUTE_INTERVAL 500 // milliseconds
+#define SEND_INTERVAL 500 // milliseconds
 
 
 // Number of left and right tick counts on the encoder.
@@ -43,7 +44,7 @@ void attachInterrupts() {
 
 void setup() {
 	attachInterrupts();
-	Serial.begin(9600);
+	Serial.begin(115200);
 }
 
 void loop() {

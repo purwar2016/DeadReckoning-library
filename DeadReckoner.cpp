@@ -1,26 +1,20 @@
 
 #include "DeadReckoner.h"
-#include <Arduino.h>
 
-DeadReckoner::DeadReckoner(volatile unsigned long *left, volatile unsigned long *right, unsigned long ci, int tpr, double r, double l) {
+DeadReckoner::DeadReckoner(volatile unsigned long *left, volatile unsigned long *right, int tpr, double r, double l) {
 	leftTicks = left;
 	rightTicks = right;
 	ticksPerRev = tpr;
-	positionComputeInterval = ci*1000; // millisecond to microseconds
 	radius = r;
 	length = l;
 	toRadPerSec = 1000000.0 * TWO_PI / ticksPerRev;
 }
 
-DeadReckoner::DeadReckoner() {
-	
-}
 
-void DeadReckoner::setParams(volatile unsigned long *left, volatile unsigned long *right, unsigned long ci, double tpr, double r, double l) {
+void DeadReckoner::setParams(volatile unsigned long *left, volatile unsigned long *right, double tpr, double r, double l) {
 	leftTicks = left;
 	rightTicks = right;
 	ticksPerRev = tpr;
-	positionComputeInterval = ci;
 	radius = r;
 	length = l;
 	toRadPerSec = 1000000 * TWO_PI / ticksPerRev;
@@ -88,15 +82,15 @@ void DeadReckoner::computeAngularVelocities() {
 	double changeLeftTicks = getChange(*leftTicks, leftTicksPrev);
 	double changeRightTicks = getChange(*rightTicks, rightTicksPrev);
 
-	wl = leftOmegaDirection * changeLeftTicks / dt_omega * toRadPerSec;
-	wr = rightOmegaDirection * changeRightTicks / dt_omega * toRadPerSec;
+	wl = (leftOmegaDirection * changeLeftTicks * toRadPerSec) / dt_omega ;
+	wr = (rightOmegaDirection * changeRightTicks * toRadPerSec) / dt_omega ;
 
-	//double toRPM = 30.0 / PI;
-	//Serial.print("\twl: "); Serial.print(wl*toRPM, 5);
-	//Serial.print("\twr: "); Serial.print(wr*toRPM, 5);
-	//Serial.print("\tdt: "); Serial.print(dt_omega);
-	//Serial.print("\tlt: "); Serial.print(changeLeftTicks);
-	//Serial.print("\trt: "); Serial.println(changeRightTicks);
+	double toRPM = 30.0 / PI;
+	Serial.print("\twl: "); Serial.print(wl*toRPM, 5);
+	Serial.print("\twr: "); Serial.print(wr*toRPM, 5);
+	Serial.print("\tdt: "); Serial.print(dt_omega);
+	Serial.print("\tlt: "); Serial.print(changeLeftTicks);
+	Serial.print("\trt: "); Serial.println(changeRightTicks);
 
 	leftTicksPrev = *leftTicks;
 	rightTicksPrev = *rightTicks;

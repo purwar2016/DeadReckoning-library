@@ -11,9 +11,9 @@
 class DeadReckoner {
 
 public:
-	DeadReckoner(volatile unsigned long *, volatile unsigned long *, unsigned long, int, double, double);
+	DeadReckoner(volatile unsigned long *, volatile unsigned long *, int, double, double);
 	DeadReckoner();
-	void setParams(volatile unsigned long *, volatile unsigned long *, unsigned long, double, double, double);
+	void setParams(volatile unsigned long *, volatile unsigned long *, double, double, double);
 	void computePosition();
 	void setX(double);
 	void setY(double);
@@ -49,7 +49,7 @@ private:
 	unsigned long dt_omega;
 	unsigned long dt_integration;
 
-	unsigned long static DeadReckoner::getChange(unsigned long current, unsigned long previous) {
+	unsigned long static getChange(unsigned long current, unsigned long previous) {
 		// Overflow has occured
 		if (current < previous) {
 			return UNSIGNED_LONG_MAX - previous + current;
