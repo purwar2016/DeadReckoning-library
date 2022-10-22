@@ -6,25 +6,21 @@
 
 
 // MEASUREMENTS
-// The units for all measurements must be consistent. 
+// The units for all measurements must be consistent.
 // You can use any length unit as desired.
 #define RADIUS 32.5 // wheel radius in mm
-#define LENGTH 55. // wheel base length in mm
+#define LENGTH 110. // wheel separation in mm
 #define TICKS_PER_REV 40
 
 // TIME INTERVALS
-#define POSITION_COMPUTE_INTERVAL 500 // milliseconds
-#define SEND_INTERVAL 500 // milliseconds
-
+#define POSITION_COMPUTE_INTERVAL 200 // milliseconds
+#define SEND_INTERVAL 500			  // milliseconds
 
 // Number of left and right tick counts on the encoder.
 volatile unsigned long leftTicks, rightTicks;
 
 // Previous times for computing elapsed time.
 unsigned long prevPositionComputeTime = 0, prevSendTime = 0;
-
-// Previous x and y coordinate.
-double prevX = 0, prevY = 0;
 
 
 DeadReckoner deadReckoner(&leftTicks, &rightTicks, TICKS_PER_REV, RADIUS, LENGTH);
@@ -37,9 +33,10 @@ void pulseRight() { rightTicks++; }
 Attaches interrupt and disables all serial communications.
 This is necessary because when interrupts are active, incoming serial communication can be lost.
 */
-void attachInterrupts() {
-	attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT_PIN), pulseLeft, HIGH);
-	attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT_PIN), pulseRight, HIGH);
+void attachInterrupts()
+{
+	attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT_PIN), pulseLeft, CHANGE);
+	attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT_PIN), pulseRight, CHANGE);
 }
 
 void setup() {
