@@ -61,6 +61,9 @@ void loop() {
 		double x = deadReckoner.getX();
 		double y = deadReckoner.getY();
 
+		// forward velocity and angular velocity of the robot.
+		double v = deadReckoner.get_v();
+		double w = deadReckoner.get_w();
 		// Left and right angular velocities.
 		double wl = deadReckoner.getWl();
 		double wr = deadReckoner.getWr();
@@ -69,7 +72,7 @@ void loop() {
 		// This angle is set initially at zero before the robot starts moving.
 		double theta = deadReckoner.getTheta();
 
-		// Total distance robot has troubled.
+		// Total distance robot has traveld.
 		double distance = sqrt(x * x + y * y);
 
 		Serial.print("x: "); Serial.print(x);
@@ -77,7 +80,9 @@ void loop() {
 		Serial.print("\twl: "); Serial.print(wl);
 		Serial.print("\twr: "); Serial.print(wr);
 		Serial.print("\ttheta: "); Serial.print(theta*RAD_TO_DEG); // theta converted to degrees.
-		Serial.print("\tdist: "); Serial.println(distance);
+		Serial.print("\tdist: "); Serial.print(distance);
+		Serial.print("\tv: "); Serial.print(v);
+		Serial.print("\tw: "); Serial.println(w);
 
 		prevSendTime = millis();
 	}

@@ -58,21 +58,31 @@ double DeadReckoner::getTheta() {
 	return theta;
 }
 
-void DeadReckoner::setLeftOmegaDirection(int direction) {
+double DeadReckoner::get_v() {
+	return v;
+}
+
+double DeadReckoner::get_w() {
+	return w;
+}
+
+void DeadReckoner::setLeftOmegaDirection(int8_t direction) {
 	leftOmegaDirection = direction;
 }
 
-void DeadReckoner::setRightOmegaDirection(int direction) {
+void DeadReckoner::setRightOmegaDirection(int8_t direction) {
 	rightOmegaDirection = direction;
 }
 
-int DeadReckoner::getLeftOmegaDirection() {
+int8_t DeadReckoner::getLeftOmegaDirection() {
 	return leftOmegaDirection;
 }
 
-int DeadReckoner::getRightOmegaDirection() {
+int8_t DeadReckoner::getRightOmegaDirection() {
 	return rightOmegaDirection;
 }
+
+
 
 void DeadReckoner::computeAngularVelocities() {
 	// Time elapsed after computing the angular velocity previously.
@@ -85,12 +95,12 @@ void DeadReckoner::computeAngularVelocities() {
 	wl = (leftOmegaDirection * changeLeftTicks * toRadPerSec) / dt_omega ;
 	wr = (rightOmegaDirection * changeRightTicks * toRadPerSec) / dt_omega ;
 
-	double toRPM = 30.0 / PI;
-	Serial.print("\twl: "); Serial.print(wl*toRPM, 5);
-	Serial.print("\twr: "); Serial.print(wr*toRPM, 5);
-	Serial.print("\tdt: "); Serial.print(dt_omega);
-	Serial.print("\tlt: "); Serial.print(changeLeftTicks);
-	Serial.print("\trt: "); Serial.println(changeRightTicks);
+	
+	// Serial.print("\twl: "); Serial.print(wl*toRPM, 5);
+	// Serial.print("\twr: "); Serial.print(wr*toRPM, 5);
+	// Serial.print("\tdt: "); Serial.print(dt_omega);
+	// Serial.print("\tlt: "); Serial.print(changeLeftTicks);
+	// Serial.print("\trt: "); Serial.println(changeRightTicks);
 
 	leftTicksPrev = *leftTicks;
 	rightTicksPrev = *rightTicks;
@@ -111,7 +121,7 @@ void DeadReckoner::computePosition() {
 
 		float Vl = wl * radius;
 		float Vr = wr * radius;
-		float v = (Vr + Vl) / 2.0;
+		v = (Vr + Vl) / 2.0;
 		w = (Vr - Vl) / length;
 		// Uses 4th order Runge-Kutta to integrate numerically to find position.
 		float xNext = xc + dt * v*(2 + cos(dt*w / 2))*cos(theta + dt * w / 2) / 3;
@@ -122,17 +132,17 @@ void DeadReckoner::computePosition() {
 		yc = yNext;
 		theta = thetaNext;
 
-		float toRPM = 30 / PI;
-		float dist = sqrt(xc*xc + yc * yc);
-		//Serial.print("\tdist: "); Serial.print(dist);
-		//Serial.print("\twl: "); Serial.print(wl*toRPM, 5);
-		//Serial.print("\twr: "); Serial.print(wr*toRPM, 5);
-		//Serial.print("\tVl: "); Serial.print(Vl);
-		//Serial.print("\tVr: "); Serial.print(Vr);
-		//Serial.print("\tw: "); Serial.print(w, 5);
-		//Serial.print("\tx: "); Serial.print(xc);
-		//Serial.print("\ty: "); Serial.print(yc);
-		//Serial.print("\ttheta: "); Serial.println(theta*RAD_TO_DEG);
+		// float toRPM = 30 / PI;
+		// float dist = sqrt(xc*xc + yc * yc);
+		// Serial.print("\tdist: "); Serial.print(dist);
+		// Serial.print("\twl: "); Serial.print(wl*toRPM, 5);
+		// Serial.print("\twr: "); Serial.print(wr*toRPM, 5);
+		// Serial.print("\tVl: "); Serial.print(Vl);
+		// Serial.print("\tVr: "); Serial.print(Vr);
+		// Serial.print("\tw: "); Serial.print(w, 5);
+		// Serial.print("\tx: "); Serial.print(xc);
+		// Serial.print("\ty: "); Serial.print(yc);
+		// Serial.print("\ttheta: "); Serial.println(theta*RAD_TO_DEG);
 
 		prevIntegrationTime = micros();
 	}
