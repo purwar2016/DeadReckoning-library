@@ -82,6 +82,15 @@ int8_t DeadReckoner::getRightOmegaDirection() {
 	return rightOmegaDirection;
 }
 
+const double DeadReckoner::wrap_angle(double angle) {
+    if (angle > M_PI) {
+      return -(2*M_PI) + angle;
+    } else if(angle < -M_PI) {
+      return (2*M_PI) - angle;
+    } else {
+      return angle;
+    }
+  }
 
 
 void DeadReckoner::computeAngularVelocities() {
@@ -130,7 +139,7 @@ void DeadReckoner::computePosition() {
 
 		xc = xNext;
 		yc = yNext;
-		theta = thetaNext;
+		theta = wrap_angle(thetaNext);
 
 		// float toRPM = 30 / PI;
 		// float dist = sqrt(xc*xc + yc * yc);

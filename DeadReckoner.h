@@ -48,6 +48,7 @@ private:
 	int8_t rightOmegaDirection = 1;
 	unsigned long dt_omega;
 	unsigned long dt_integration;
+	const double wrap_angle(double angle);
 
 	unsigned long static getChange(unsigned long current, unsigned long previous) {
 		// Overflow has occured
