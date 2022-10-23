@@ -35,11 +35,11 @@ private:
 	double xc, yc; // Latest position coordinates in ticks.
 	double wl, wr; // Latest left and right angular velocity of the wheels in radians per second.
 	int ticksPerRev; // Number of tick registers per second of the encoder.
-	float w; // Angular velocity of the robot.
-	float v; //for- backwards velocity of robot
+	float w; // Angular velocity of the robot in rad/s
+	float v; //for- backwards velocity of robot mm/s
 	double length; // Length from left wheel to right wheel.
-	double radius; // Radius of the wheel.
-	double theta;
+	double radius; // Radius of the wheel in mm
+	double theta; // in rad
 	double toRadPerSec; // ticks/microsecond to rad/s conversion factor
 	unsigned long prevIntegrationTime;
 	unsigned long prevWheelComputeTime;
