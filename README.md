@@ -1,6 +1,6 @@
 # DeadReckoning-library
 
-This library has been developed by Jae An for the PreciseMotion library (PREMO) for precise motion control of low-cost kit robots.
+This library has been developed in Computer Aided Design and Innovation Lab at Stony Brook University for precise motion control of low-cost kit robots.
 
 This library uses dead reckoning on a differential drive robots with encoders to estimate the position of the robot real time. The library can also be used with a gyroscope for further accuracy.
 
